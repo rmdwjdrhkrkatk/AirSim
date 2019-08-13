@@ -48,7 +48,7 @@ public:
     virtual void sleep_for(TTimeDelta dt) override
     {
         //for intervals > 2ms just sleep otherwise do spilling otherwise delay won't be accurate
-        if (dt > 2.0 / 1000) {
+        if (dt > 1.0 / 10000) {
             TTimeDelta dt_scaled = fromWallDelta(dt);
             std::this_thread::sleep_for(std::chrono::duration<double>(dt_scaled));
         }
