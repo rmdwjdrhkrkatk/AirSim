@@ -252,7 +252,7 @@ protected:
         firmware_->offboardApi().setGoalAndMode(&goal, &mode, message);
     }
     
-    virtual void commandRotorSpeed(float o0, float o1, float o2, float o3, float o4) override
+    virtual void commandRotorSpeed(float o0, float o1, float o2, float o3) override
     {
         //Utils::log(Utils::stringf("commandVelocityZ %f, %f, %f, %f", vx, vy, z, yaw_mode.yaw_or_rate));
 
