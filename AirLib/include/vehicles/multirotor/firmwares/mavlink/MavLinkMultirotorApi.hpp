@@ -443,6 +443,13 @@ protected: //methods
         float yaw = yaw_mode.yaw_or_rate * M_PIf / 180;
         mav_vehicle_->moveByLocalVelocityWithAltHold(vx, vy, z, !yaw_mode.is_rate, yaw);
     }
+    virtual void commandRotorSpeed(float o0, float o1, float o2, float o3) override
+    {
+        unused(o0);
+	unused(o1);
+	unused(o2);
+	unused(o3);
+    }
     virtual void commandPosition(float x, float y, float z, const YawMode& yaw_mode) override
     {
         checkValidVehicle();
