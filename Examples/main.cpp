@@ -93,7 +93,8 @@ void runSteroImageGenerator(int argc, const char *argv[])
 void runGaussianMarkovTest()
 {
 	using namespace msr::airlib;
-
+	
+	StandAlonePhysics::testCollison();
 	GaussianMarkovTest test;
 	test.run();
 }
