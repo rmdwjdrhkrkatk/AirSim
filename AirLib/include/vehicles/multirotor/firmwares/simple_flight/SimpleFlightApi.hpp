@@ -17,6 +17,7 @@
 #include "AirSimSimpleFlightCommon.hpp"
 #include "physics/PhysicsBody.hpp"
 #include "common/AirSimSettings.hpp"
+#include "common/HelperFunctions.hpp"
 
 //TODO: we need to protect contention between physics thread and API server thread
 
@@ -180,7 +181,7 @@ protected:
 
     virtual float getCommandPeriod() const override
     {
-        return 1.0f / 50; //50hz
+        return 1.0f / 1000; //50hz
     }
 
     virtual float getTakeoffZ() const override
@@ -250,7 +251,23 @@ protected:
         std::string message;
         firmware_->offboardApi().setGoalAndMode(&goal, &mode, message);
     }
+    
+    virtual void commandRotorSpeed(float o0, float o1, float o2, float o3, float o4) override
+    {
+        //Utils::log(Utils::stringf("commandVelocityZ %f, %f, %f, %f", vx, vy, z, yaw_mode.yaw_or_rate));
 
+        typedef simple_flight::GoalModeType GoalModeType;
+        simple_flight::GoalMode mode = simple_flight::GoalMode::getRotorSpeedMode();
+
+        simple_flight::Axis4r speedGoal(o0, o1, o2, o3);
+        simple_flight::Axis4r goal;
+
+        converter.getCommandArgumentsFromSpeed(speedGoal, goal);
+        
+        std::string message;
+        firmware_->offboardApi().setGoalAndMode(&goal, &mode, message);
+    }
+    
     virtual void commandPosition(float x, float y, float z, const YawMode& yaw_mode) override
     {
         //Utils::log(Utils::stringf("commandPosition %f, %f, %f, %f", x, y, z, yaw_mode.yaw_or_rate));
@@ -310,8 +327,9 @@ private:
     unique_ptr<simple_flight::IFirmware> firmware_;
 
     MultirotorApiParams safety_params_;
-
+    
     RCData last_rcData_;
+    msr::airlib::helper_func::Converter converter;
 };
 
 }} //namespace
