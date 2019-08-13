@@ -132,6 +132,21 @@ bool MultirotorApiBase::moveByVelocityZ(float vx, float vy, float z, float durat
     }, duration).isTimeout();
 }
 
+bool MultirotorApiBase::moveByRotorSpeed(float o0, float o1, float o2, float o3, float duration)
+{
+    SingleTaskCall lock(this);
+
+    if (duration <= 0)
+        return false;
+    
+    Waiter waiter(getCommandPeriod(), timeout_sec, getCancelToken());
+    
+    return waitForFunction([&]() {
+        moveByRotorSpeedInternal(o0, o1, o2, o3);
+        return false; //keep moving until timeout
+    }, duration).isTimeout();
+}
+    
 bool MultirotorApiBase::moveOnPath(const vector<Vector3r>& path, float velocity, float timeout_sec, DrivetrainType drivetrain, const YawMode& yaw_mode,
     float lookahead, float adaptive_lookahead)
 {
@@ -446,7 +461,12 @@ void MultirotorApiBase::moveByVelocityZInternal(float vx, float vy, float z, con
     if (safetyCheckVelocityZ(vx, vy, z))
         commandVelocityZ(vx, vy, z, yaw_mode);
 }
-
+    
+void MultirotorApiBase::moveByRotorSpeedInternal(float o0, float o1, float o2, float o3)
+{
+    commandRotorSpeed(o0, o1, o2, o3);
+}
+    
 void MultirotorApiBase::moveToPositionInternal(const Vector3r& dest, const YawMode& yaw_mode)
 {
     if (safetyCheckDestination(dest))
