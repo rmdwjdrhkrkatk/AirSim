@@ -46,9 +46,11 @@ public:
             if (takenoff_ &&
                 (clock_->millis() - goal_timestamp_ > params_->api_goal_timeout)) {
                 if (!is_api_timedout_) {
+                    /*
                     comm_link_->log("API call was not received, entering hover mode for safety");
                     goal_mode_ = GoalMode::getPositionMode();
                     goal_ = Axis4r::xyzToAxis4(state_estimator_->getPosition(), true);
+                    */
                     is_api_timedout_ = true;
                 }
 
