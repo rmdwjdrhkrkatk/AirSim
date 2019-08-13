@@ -139,7 +139,7 @@ bool MultirotorApiBase::moveByRotorSpeed(float o0, float o1, float o2, float o3,
     if (duration <= 0)
         return false;
     
-    Waiter waiter(getCommandPeriod(), getCancelToken());
+    Waiter waiter(getCommandPeriod(), duration, getCancelToken());
     
     return waitForFunction([&]() {
         moveByRotorSpeedInternal(o0, o1, o2, o3);
