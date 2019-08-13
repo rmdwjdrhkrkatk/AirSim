@@ -472,7 +472,7 @@ public:
         CommandContext* context = params.context;
         
         context->tasker.execute([=]() {
-            context->client.moveByRotorSpeed(o0, o1, o2, o3, duration);
+            context->client.moveByRotorSpeedAsync(o0, o1, o2, o3, duration);
         });
         
         return false;
