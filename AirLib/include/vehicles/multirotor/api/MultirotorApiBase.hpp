@@ -29,7 +29,8 @@ protected: //must be implemented
     virtual void commandVelocity(float vx, float vy, float vz, const YawMode& yaw_mode) = 0;
     virtual void commandVelocityZ(float vx, float vy, float z, const YawMode& yaw_mode) = 0;
     virtual void commandPosition(float x, float y, float z, const YawMode& yaw_mode) = 0;
-
+    virtual void commandRotorSpeed(float o0, float o1, float o2, float o3) = 0;
+    
     /************************* State APIs *********************************/
     virtual Kinematics::State getKinematicsEstimated() const = 0;
     virtual LandedState getLandedState() const = 0;
@@ -85,6 +86,7 @@ public: //these APIs uses above low level APIs
     virtual bool moveByAngleThrottle(float pitch, float roll, float throttle, float yaw_rate, float duration);
     virtual bool moveByVelocity(float vx, float vy, float vz, float duration, DrivetrainType drivetrain, const YawMode& yaw_mode);
     virtual bool moveByVelocityZ(float vx, float vy, float z, float duration, DrivetrainType drivetrain, const YawMode& yaw_mode);
+    virtual bool moveByRotorSpeed(float o0, float o1, float o2, float o3, float duration);
     virtual bool moveOnPath(const vector<Vector3r>& path, float velocity, float timeout_sec, DrivetrainType drivetrain, const YawMode& yaw_mode,
         float lookahead, float adaptive_lookahead);
     virtual bool moveToPosition(float x, float y, float z, float velocity, float timeout_sec, DrivetrainType drivetrain,
@@ -131,7 +133,8 @@ protected: //utility methods
     virtual void moveToPositionInternal(const Vector3r& dest, const YawMode& yaw_mode);
     virtual void moveByRollPitchZInternal(float pitch, float roll, float z, float yaw);
     virtual void moveByRollPitchThrottleInternal(float pitch, float roll, float throttle, float yaw_rate);
-
+    virtual void moveByRotorSpeedInternal(float o0, float o1, float o3, float o4);
+    
     /************* safety checks & emergency maneuvers ************/
     virtual bool emergencyManeuverIfUnsafe(const SafetyEval::EvalResult& result);
     virtual bool safetyCheckVelocity(const Vector3r& velocity);
