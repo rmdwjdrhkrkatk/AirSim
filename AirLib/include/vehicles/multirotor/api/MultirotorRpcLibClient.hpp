@@ -28,6 +28,7 @@ public:
         DrivetrainType drivetrain = DrivetrainType::MaxDegreeOfFreedom, const YawMode& yaw_mode = YawMode(), const std::string& vehicle_name = "");
     MultirotorRpcLibClient* moveByVelocityZAsync(float vx, float vy, float z, float duration,
         DrivetrainType drivetrain = DrivetrainType::MaxDegreeOfFreedom, const YawMode& yaw_mode = YawMode(), const std::string& vehicle_name = "");
+    MultirotorRpcLibClient* moveByRotorSpeedAsync(float o0, float o1, float o2, float o3, float duration, const std::string& vehicle_name = "");
     MultirotorRpcLibClient* moveOnPathAsync(const vector<Vector3r>& path, float velocity, float timeout_sec = Utils::max<float>(),
         DrivetrainType drivetrain = DrivetrainType::MaxDegreeOfFreedom, const YawMode& yaw_mode = YawMode(), 
         float lookahead = -1, float adaptive_lookahead = 1, const std::string& vehicle_name = "");
