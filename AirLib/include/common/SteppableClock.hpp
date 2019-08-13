@@ -12,7 +12,7 @@ namespace msr { namespace airlib {
 
 class SteppableClock : public ClockBase {
 public:
-    static constexpr real_T DefaultStepSize = 20E-3f;
+    static constexpr real_T DefaultStepSize = 1E-3f;
 
     //Debug clock allows to advance the clock manually in arbitrary way
     //TTimePoint is nano seconds passed since some fixed point in time
