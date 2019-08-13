@@ -451,6 +451,34 @@ public:
     }
 };
 
+class MoveByRotorSpeedCommand : public DroneCommand {
+public:
+    MoveByRotorSpeedCommand() : DroneCommand("MoveByRotorSpeed", "Move by specified rotor speeds omega0 - omega3 [rad/sec]")
+    {
+        this->addSwitch({ "-o0", "0", "rotor 0 speed radians per second (default 0)" });
+        this->addSwitch({ "-o1", "0", "rotor 1 speed radians per second (default 0)" });
+        this->addSwitch({ "-o2", "0", "rotor 2 speed radians per second (default 0)" });
+        this->addSwitch({ "-o3", "0", "rotor 3 speed radians per second (default 0)" });
+        this->addSwitch({ "-duration", "0.001", "the duration of this command in seconds (default 0.001)" });
+    }
+
+    bool execute(const DroneCommandParameters& params)
+    {
+        float o0 = getSwitch("-o0").toFloat();
+        float o1 = getSwitch("-o1").toFloat();
+        float o2 = getSwitch("-o2").toFloat();
+        float o3 = getSwitch("-o3").toFloat();
+        float duration = getSwitch("-duration").toFloat();
+        CommandContext* context = params.context;
+        
+        context->tasker.execute([=]() {
+            context->client.moveByRotorSpeed(o0, o1, o2, o3, duration);
+        });
+        
+        return false;
+    }
+};
+    
 class MoveByManualCommand : public DroneCommand {
 public:
     MoveByManualCommand() : DroneCommand("MoveByManual", "Move using remote control manually")
@@ -1408,6 +1436,7 @@ int main(int argc, const char *argv[]) {
     MoveByAngleThrottleCommand moveByAngleThrottle;
     MoveByVelocityCommand moveByVelocity;
     MoveByVelocityZCommand moveByVelocityZ;
+    MoveByRotorSpeedCommand moveByRotorSpeed;
     MoveOnPathCommand moveOnPath;
     SetSafetyCommand setSafety;
     BackForthByAngleCommand backForthByAngle;
@@ -1441,6 +1470,7 @@ int main(int argc, const char *argv[]) {
     shell.addCommand(moveByAngleThrottle);
     shell.addCommand(moveByVelocity);
     shell.addCommand(moveByVelocityZ);
+    shell.addCommand(moveByRotorSpeed);
     shell.addCommand(moveOnPath);
     shell.addCommand(setSafety);
     shell.addCommand(backForthByAngle);
